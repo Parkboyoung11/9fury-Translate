@@ -3,22 +3,34 @@
 * Facebook  : fb.com/sonvuhong9fury
 */
 
+function showMeaning(input, word,from, la) {
+     $.ajax({
+        type: 'GET',
+        url: 'http://mazii.net/api/gsearch/' + word +'/' +from + '/' + la,
+        success: function(data) {
+             var meaning = JSON.parse(data.data);
+            $("#" + input).val(meaning.sentences[0].trans);
+        }
+    });
+}
+
 $( "#japanese" ).keyup(function() {
     var japanese = $("#japanese").val();
-    var urlApi = "http://khanhnv.xyz/Son/translate.php?ja=" + japanese;
-    $.get(urlApi, function(data) {
-        var meaning = JSON.parse(data);
-        $("#vietnamese").val(meaning.vietnamese);
-        $("#english").val(meaning.english);
-    });
+    showMeaning("vietnamese", japanese,"ja", "vi");
+    showMeaning("english", japanese,"ja",  "en");   
 
-    // $.get("http://khanhnv.xyz/Son/translate.php", {
-    //     ja: japanese
-    // }).done(function(data) {
-    //     var obj = JSON.parse(data);
-    //     $("#vietnamese").val(obj.vietnamese);
-    //     $("#english").val(obj.english);
-    // })
+});
 
+$( "#vietnamese" ).keyup(function() {
+    var vietnamese = $("#vietnamese").val();
+    showMeaning("japanese", vietnamese,"vi", "ja");
+    showMeaning("english", vietnamese,"vi",  "en");   
+
+});
+
+$( "#english" ).keyup(function() {
+    var english = $("#english").val();
+    showMeaning("vietnamese", english,"en", "vi");
+    showMeaning("japanese", english,"en",  "ja");   
 
 });
